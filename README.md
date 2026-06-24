@@ -1,46 +1,58 @@
-# Astro Starter Kit: Basics
+# Portfolio (Astro)
 
-```sh
-npm create astro@latest -- --template basics
-```
+A feature-structured portfolio site focused on reusability and clean separation of concerns.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Architecture
 
-## 🚀 Project Structure
+The codebase follows a simple clean architecture layout:
 
-Inside of your Astro project, you'll see the following folders and files:
+- `src/pages`: route entry points only.
+- `src/layouts`: global shell and app-wide concerns.
+- `src/shared`: cross-feature configuration and shared utilities.
+- `src/features/portfolio/domain`: feature-specific types/contracts.
+- `src/features/portfolio/data`: feature data/source objects.
+- `src/features/portfolio/components`: reusable UI sections for this feature.
+- `src/features/portfolio/PortfolioPage.astro`: feature composer (orchestrates sections and page-level behavior).
+
+## Current Structure
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+src/
+	features/
+		portfolio/
+			components/
+				AboutSection.astro
+				ContactSection.astro
+				ExperienceSection.astro
+				HeroSection.astro
+				ProjectsSection.astro
+				SkillsSection.astro
+				TestimonialsSection.astro
+			data/
+				portfolio.data.ts
+			domain/
+				portfolio.types.ts
+			PortfolioPage.astro
+	layouts/
+		Layout.astro
+	pages/
+		index.astro
+	shared/
+		config/
+			site.ts
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Why This Is Cleaner
 
-## 🧞 Commands
+- Pages stay thin and only compose features.
+- Layout reads shared config instead of hardcoded nav/meta values.
+- Portfolio content is centralized in typed data objects.
+- UI sections are isolated and reusable.
+- Feature behavior (typing effect, skill animation, contact UX) stays in the feature entry component.
 
-All commands are run from the root of the project, from a terminal:
+## Commands
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `npm install`: install dependencies.
+- `npm run dev`: run local dev server at `http://localhost:4321`.
+- `npm run build`: create production build in `dist`.
+- `npm run preview`: preview production build locally.

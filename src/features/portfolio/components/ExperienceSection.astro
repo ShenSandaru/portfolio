@@ -1,0 +1,33 @@
+---
+import type { ExperienceItem } from "../domain/portfolio.types";
+
+interface Props {
+  experiences: ExperienceItem[];
+}
+
+const { experiences } = Astro.props;
+---
+
+<section class="experience" id="experience">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Experience</span>
+      <h2>My Professional Journey</h2>
+    </div>
+    <div class="timeline">
+      {
+        experiences.map((item) => (
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <span class="date">{item.period}</span>
+              <h3>{item.title}</h3>
+              <p class="company">{item.company}</p>
+              <p>{item.description}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

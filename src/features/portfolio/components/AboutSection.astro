@@ -1,0 +1,46 @@
+---
+import type { AboutContent } from "../domain/portfolio.types";
+
+interface Props {
+  content: AboutContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section class="about" id="about">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">About Me</span>
+      <h2>Passionate About Great Code & Design</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-card reveal">
+        <h3>{content.title}</h3>
+        {content.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+        <div class="about-details">
+          {
+            content.details.map((detail) => (
+              <div class="about-detail">
+                <i class={detail.iconClass}></i><span>{detail.text}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div class="about-image-grid">
+        {
+          content.cards.map((card) => (
+            <div class="about-image-card reveal">
+              <div class={`icon ${card.iconToneClass}`}>
+                <i class={card.iconClass}></i>
+              </div>
+              <h4>{card.title}</h4>
+              <p>{card.description}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

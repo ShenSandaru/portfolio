@@ -1,0 +1,50 @@
+---
+import type { ProficiencyItem } from "../domain/portfolio.types";
+
+interface SkillItem {
+  iconClass: string;
+  label: string;
+}
+
+interface Props {
+  skills: SkillItem[];
+  proficiency: ProficiencyItem[];
+}
+
+const { skills, proficiency } = Astro.props;
+---
+
+<section class="skills" id="skills">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Skills & Tools</span>
+      <h2>Technologies I Work With</h2>
+    </div>
+    <div class="skills-grid reveal">
+      {
+        skills.map((skill) => (
+          <div class="skill-item">
+            <i class={skill.iconClass}></i><span>{skill.label}</span>
+          </div>
+        ))
+      }
+    </div>
+    <div class="skill-bar-wrapper reveal">
+      <h3>Proficiency Levels</h3>
+      <div class="skill-bars">
+        {
+          proficiency.map((item) => (
+            <div class="skill-bar-item">
+              <div class="label">
+                <span>{item.label}</span><span>{item.percent}%</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" data-width={String(item.percent)}></div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

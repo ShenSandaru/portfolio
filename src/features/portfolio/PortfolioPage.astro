@@ -1,0 +1,106 @@
+---
+import AboutSection from "./components/AboutSection.astro";
+import ContactSection from "./components/ContactSection.astro";
+import ExperienceSection from "./components/ExperienceSection.astro";
+import HeroSection from "./components/HeroSection.astro";
+import ProjectsSection from "./components/ProjectsSection.astro";
+import SkillsSection from "./components/SkillsSection.astro";
+import TestimonialsSection from "./components/TestimonialsSection.astro";
+import {
+  aboutContent,
+  contactContent,
+  experiences,
+  heroContent,
+  proficiency,
+  projects,
+  skills,
+  testimonials,
+  typingWords,
+} from "./data/portfolio.data";
+---
+
+<HeroSection content={heroContent} />
+<AboutSection content={aboutContent} />
+<SkillsSection skills={skills} proficiency={proficiency} />
+<ProjectsSection projects={projects} />
+<ExperienceSection experiences={experiences} />
+<TestimonialsSection testimonials={testimonials} />
+<ContactSection content={contactContent} />
+
+<script define:vars={{ typingWords }}>
+  const words = typingWords;
+  let wordIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  const typingEl = document.getElementById("typingText");
+
+  function typeEffect() {
+    if (!typingEl) return;
+
+    const currentWord = words[wordIndex];
+
+    if (!isDeleting) {
+      typingEl.textContent = currentWord.substring(0, charIndex + 1);
+      charIndex++;
+      if (charIndex === currentWord.length) {
+        isDeleting = true;
+        setTimeout(typeEffect, 2000);
+        return;
+      }
+      setTimeout(typeEffect, 100);
+      return;
+    }
+
+    typingEl.textContent = currentWord.substring(0, charIndex - 1);
+    charIndex--;
+    if (charIndex === 0) {
+      isDeleting = false;
+      wordIndex = (wordIndex + 1) % words.length;
+      setTimeout(typeEffect, 500);
+      return;
+    }
+    setTimeout(typeEffect, 60);
+  }
+
+  typeEffect();
+
+  const skillBarsObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll(".bar-fill").forEach((fill) => {
+            const width = fill.getAttribute("data-width") || "0";
+            fill.style.width = `${width}%`;
+          });
+          skillBarsObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  const skillBarWrapper = document.querySelector(".skill-bar-wrapper");
+  if (skillBarWrapper) skillBarsObserver.observe(skillBarWrapper);
+
+  document.getElementById("contactForm")?.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const btn = this.querySelector('button[type="submit"]');
+    if (!btn) return;
+
+    const original = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.innerHTML = '<i class="fas fa-check"></i> Sent Successfully!';
+      btn.style.background = "linear-gradient(135deg, #00d4aa, #00b894)";
+
+      setTimeout(() => {
+        btn.innerHTML = original;
+        btn.style.background = "";
+        btn.disabled = false;
+        this.reset();
+      }, 2500);
+    }, 1500);
+  });
+</script>

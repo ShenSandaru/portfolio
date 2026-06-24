@@ -1,0 +1,57 @@
+---
+import type { ContactContent } from "../domain/portfolio.types";
+
+interface Props {
+  content: ContactContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Contact</span>
+      <h2>Let's Work Together</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>{content.introTitle}</h3>
+        <p>{content.introDescription}</p>
+        <div class="contact-methods">
+          {
+            content.methods.map((method) => (
+              <div class="contact-method">
+                <div class="icon-box"><i class={method.iconClass}></i></div>
+                <div class="info">
+                  <label>{method.label}</label>
+                  <span>{method.value}</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+        <div class="social-links">
+          {
+            content.socials.map((social) => (
+              <a href={social.href} aria-label={social.label}>
+                <i class={social.iconClass}></i>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+      <form class="contact-form reveal" id="contactForm">
+        <div class="form-row">
+          <input type="text" placeholder="Your Name" required />
+          <input type="email" placeholder="Your Email" required />
+        </div>
+        <input type="text" placeholder="Subject" />
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
