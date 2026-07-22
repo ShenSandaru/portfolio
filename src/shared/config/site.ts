@@ -10,6 +10,7 @@ export const mainNavLinks = [
   { href: "#skills", label: "Skills" },
   { href: "#projects", label: "Projects" },
   { href: "#experience", label: "Experience" },
+  { href: "#resume", label: "Resume" },
   { href: "#testimonials", label: "Testimonials" },
   { href: "#contact", label: "Contact" },
 ];

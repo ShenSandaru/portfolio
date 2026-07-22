@@ -63,7 +63,80 @@ const currentYear = new Date().getFullYear();
         color: var(--text);
         line-height: 1.6;
         overflow-x: hidden;
+        transition: background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1), color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       }
+
+      /* === MATTE BLACK OVERRIDE MODE FOR CONTACT === */
+      body.dark-mode {
+        background-color: #0b0c10 !important;
+        color: #f1f5f9 !important;
+      }
+      body.dark-mode .navbar.scrolled {
+        background: rgba(11, 12, 16, 0.92) !important;
+        border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5) !important;
+      }
+      body.dark-mode .nav-links a {
+        color: #94a3b8 !important;
+      }
+      body.dark-mode .nav-links a:hover,
+      body.dark-mode .nav-links a.active {
+        color: #ffffff !important;
+      }
+      body.dark-mode .logo {
+        background: linear-gradient(135deg, #60a5fa, #3b82f6) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+      }
+      body.dark-mode .contact {
+        background: transparent !important;
+      }
+      body.dark-mode .contact-info h3,
+      body.dark-mode .contact .section-header h2 {
+        color: #ffffff !important;
+      }
+      body.dark-mode .contact-info p,
+      body.dark-mode .contact-method .info label {
+        color: #94a3b8 !important;
+      }
+      body.dark-mode .contact-method .info span {
+        color: #ffffff !important;
+      }
+      body.dark-mode .contact-method .icon-box {
+        background: rgba(37, 99, 235, 0.15) !important;
+        color: #60a5fa !important;
+        border: 1px solid rgba(96, 165, 250, 0.2) !important;
+      }
+      body.dark-mode .contact-form input,
+      body.dark-mode .contact-form textarea {
+        background: rgba(15, 23, 42, 0.7) !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
+      }
+      body.dark-mode .contact-form input::placeholder,
+      body.dark-mode .contact-form textarea::placeholder {
+        color: #64748b !important;
+      }
+      body.dark-mode .contact-form input:focus,
+      body.dark-mode .contact-form textarea:focus {
+        border-color: #60a5fa !important;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3) !important;
+        background: rgba(15, 23, 42, 0.9) !important;
+      }
+      body.dark-mode .social-links a {
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+        color: #94a3b8 !important;
+      }
+      body.dark-mode .social-links a:hover {
+        background: var(--primary) !important;
+        color: #ffffff !important;
+      }
+      body.dark-mode .footer {
+        background: #0b0c10 !important;
+        border-top-color: rgba(255, 255, 255, 0.1) !important;
+      }
+
       a {
         text-decoration: none;
         color: inherit;
@@ -971,6 +1044,7 @@ const currentYear = new Date().getFullYear();
       }
       .contact-method .info span {
         font-weight: 600;
+        color: var(--text);
       }
       .social-links {
         display: flex;
@@ -1055,6 +1129,20 @@ const currentYear = new Date().getFullYear();
       .reveal.visible {
         opacity: 1;
         transform: translateY(0);
+      }
+
+      /* === SCROLL PROGRESS BAR === */
+      .scroll-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        z-index: 99999;
+        width: 0%;
+        transition: width 0.1s linear;
+        border-radius: 0 2px 2px 0;
+        box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
       }
 
       /* === CURSOR === */
@@ -1166,11 +1254,14 @@ const currentYear = new Date().getFullYear();
     </style>
   </head>
   <body>
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
     <!-- Background decorations -->
     <div class="noise"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
+    <div class="orb orb-1" id="orb1"></div>
+    <div class="orb orb-2" id="orb2"></div>
+    <div class="orb orb-3" id="orb3"></div>
     <div class="cursor-follower" id="cursor"></div>
 
     <!-- Navbar -->
@@ -1206,33 +1297,105 @@ const currentYear = new Date().getFullYear();
 
     <!-- Global JavaScript -->
     <script>
-      // === Navbar scroll effect ===
+      // === Navbar scroll effect & Scroll progress bar ===
       const navbar = document.getElementById("navbar");
+      const scrollProgress = document.getElementById("scrollProgress");
+      const orb1 = document.getElementById("orb1");
+      const orb2 = document.getElementById("orb2");
+      const orb3 = document.getElementById("orb3");
+
       window.addEventListener("scroll", () => {
-        navbar.classList.toggle("scrolled", window.scrollY > 50);
+        const scrollY = window.scrollY;
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progressPercentage = (scrollY / totalHeight) * 100;
+        
+        if (scrollProgress) {
+          scrollProgress.style.width = `${progressPercentage}%`;
+        }
+
+        if (navbar) {
+          navbar.classList.toggle("scrolled", scrollY > 50);
+        }
+
+        // Parallax ambient orb shifts as user scrolls
+        if (orb1) orb1.style.transform = `translateY(${scrollY * 0.15}px)`;
+        if (orb2) orb2.style.transform = `translateY(${-scrollY * 0.1}px)`;
+        if (orb3) orb3.style.transform = `translate(${scrollY * 0.05}px, ${-scrollY * 0.08}px)`;
       });
 
       // === Hamburger menu toggle ===
       const hamburger = document.getElementById("hamburger");
       const navLinks = document.getElementById("navLinks");
-      hamburger.addEventListener("click", () => {
-        hamburger.classList.toggle("active");
-        navLinks.classList.toggle("active");
-      });
-      document.querySelectorAll(".nav-links a").forEach((link) => {
-        link.addEventListener("click", () => {
-          hamburger.classList.remove("active");
-          navLinks.classList.remove("active");
+      if (hamburger && navLinks) {
+        hamburger.addEventListener("click", () => {
+          hamburger.classList.toggle("active");
+          navLinks.classList.toggle("active");
+        });
+        document.querySelectorAll(".nav-links a").forEach((link) => {
+          link.addEventListener("click", () => {
+            hamburger.classList.remove("active");
+            navLinks.classList.remove("active");
+          });
+        });
+      }
+
+      // === Active section menu highlighter on scroll ===
+      const sections = document.querySelectorAll("section[id]");
+      const navItems = document.querySelectorAll(".nav-links a");
+
+      window.addEventListener("scroll", () => {
+        let currentSectionId = "";
+        sections.forEach((section) => {
+          const sectionTop = (section as HTMLElement).offsetTop - 120;
+          if (window.scrollY >= sectionTop) {
+            currentSectionId = section.getAttribute("id") || "";
+          }
+        });
+
+        navItems.forEach((item) => {
+          item.classList.remove("active");
+          if (item.getAttribute("href") === `#${currentSectionId}`) {
+            item.classList.add("active");
+          }
         });
       });
 
-      // === Cursor follower (hidden on touch devices) ===
-      const cursor = document.getElementById("cursor");
-      document.addEventListener("mousemove", (e) => {
-        cursor.style.left = e.clientX + "px";
-        cursor.style.top = e.clientY + "px";
+      // === Interactive 3D Card Tilt Effect on Hover ===
+      const tiltCards = document.querySelectorAll(
+        ".project-card, .about-card, .about-image-card, .testimonial-card, .skill-item"
+      );
+
+      tiltCards.forEach((card) => {
+        const el = card as HTMLElement;
+        el.style.transition = "transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease";
+
+        el.addEventListener("mousemove", (e: MouseEvent) => {
+          const rect = el.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          const rotateX = ((y - centerY) / centerY) * -6;
+          const rotateY = ((x - centerX) / centerX) * 6;
+
+          el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
+        });
+
+        el.addEventListener("mouseleave", () => {
+          el.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+        });
       });
-      if ("ontouchstart" in window) cursor.style.display = "none";
+
+      // === Cursor follower ===
+      const cursor = document.getElementById("cursor");
+      if (cursor) {
+        document.addEventListener("mousemove", (e) => {
+          cursor.style.left = e.clientX + "px";
+          cursor.style.top = e.clientY + "px";
+        });
+        if ("ontouchstart" in window) cursor.style.display = "none";
+      }
 
       // === Scroll reveal IntersectionObserver ===
       const revealElements = document.querySelectorAll(".reveal");
@@ -1248,6 +1411,24 @@ const currentYear = new Date().getFullYear();
         { threshold: 0.15, rootMargin: "0px 0px -50px 0px" }
       );
       revealElements.forEach((el) => revealObserver.observe(el));
+
+      // === Full Window Matte Black Transformation Observer for Contact ===
+      const contactSection = document.getElementById("contact");
+      if (contactSection) {
+        const darkThemeObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                document.body.classList.add("dark-mode");
+              } else {
+                document.body.classList.remove("dark-mode");
+              }
+            });
+          },
+          { threshold: 0.25 }
+        );
+        darkThemeObserver.observe(contactSection);
+      }
     </script>
   </body>
 </html>
