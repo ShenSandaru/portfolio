@@ -1,8 +1,8 @@
 export const siteMeta = {
-  name: "Shen",
+  name: "Shen Sandaru",
   role: "Portfolio",
   description:
-    "Full-stack developer portfolio showcasing projects, experience, and contact details.",
+    "Undergraduate at University of Moratuwa. Full-stack developer crafting clean digital experiences.",
 };
 
 export const mainNavLinks = [

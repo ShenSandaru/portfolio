@@ -35,7 +35,7 @@ export const heroContent: HeroContent = {
   titleName: "Shen",
   titleRole: "Developer",
   intro:
-    "I craft digital experiences that blend beautiful design with robust engineering. Specializing in modern web technologies, I bring ideas to life with clean code and creative solutions.",
+    "Undergraduate at University of Moratuwa. I craft digital experiences that blend beautiful design with robust engineering and clean code.",
   ctaPrimaryLabel: "View My Work",
   ctaPrimaryHref: "#projects",
   ctaSecondaryLabel: "Let's Talk",
@@ -51,14 +51,14 @@ export const heroContent: HeroContent = {
 export const aboutContent: AboutContent = {
   title: "Who I Am",
   paragraphs: [
-    "I'm a full-stack developer with a passion for building digital products that make a real difference. With expertise across the entire web stack, I combine technical excellence with creative thinking to deliver outstanding results.",
-    "When I'm not coding, you'll find me exploring new technologies, contributing to open-source projects, or writing about my experiences in tech.",
+    "I'm an Undergraduate student at the University of Moratuwa, Sri Lanka, with a passion for building full-stack applications and solving complex problems.",
+    "Driven by curiosity and a 'Dream Catcher' mindset, I continuously build software solutions, explore modern web technologies, and contribute to open-source software.",
   ],
   details: [
-    { iconClass: "fas fa-user", text: "Shen" },
-    { iconClass: "fas fa-map-marker-alt", text: "Remote / Worldwide" },
-    { iconClass: "fas fa-envelope", text: "hello@shen.dev" },
-    { iconClass: "fas fa-laptop-code", text: "Full-Stack Developer" },
+    { iconClass: "fas fa-user", text: "Shen Sandaru" },
+    { iconClass: "fas fa-map-marker-alt", text: "Sri Lanka" },
+    { iconClass: "fab fa-github", text: "shensandaru" },
+    { iconClass: "fas fa-graduation-cap", text: "University of Moratuwa" },
   ],
   cards: [
     {
@@ -194,10 +194,13 @@ export const contactContent: ContactContent = {
     { iconClass: "fas fa-phone-alt", label: "Phone", value: "+1 (555) 123-4567" },
   ],
   socials: [
-    { iconClass: "fab fa-github", label: "GitHub", href: "#" },
+    {
+      iconClass: "fab fa-github",
+      label: "GitHub",
+      href: "https://github.com/ShenSandaru",
+    },
     { iconClass: "fab fa-linkedin-in", label: "LinkedIn", href: "#" },
     { iconClass: "fab fa-twitter", label: "Twitter", href: "#" },
     { iconClass: "fab fa-dribbble", label: "Dribbble", href: "#" },
-    { iconClass: "fab fa-youtube", label: "YouTube", href: "#" },
   ],
 };
