@@ -40,15 +40,16 @@ const currentYear = new Date().getFullYear();
         box-sizing: border-box;
       }
       :root {
-        --bg: #0a0a0f;
-        --surface: #12121a;
-        --surface2: #1a1a2e;
-        --primary: #6c63ff;
-        --primary-glow: rgba(108, 99, 255, 0.3);
-        --accent: #ff6584;
-        --accent2: #00d4aa;
-        --text: #e8e8f0;
-        --text-muted: #8888a0;
+        --bg: #ffffff;
+        --surface: #f8fafc;
+        --surface2: #f1f5f9;
+        --primary: #2563eb;
+        --primary-glow: rgba(37, 99, 235, 0.15);
+        --accent: #1d4ed8;
+        --accent2: #2563eb;
+        --text: #0f172a;
+        --text-muted: #64748b;
+        --border-color: #e2e8f0;
         --radius: 16px;
         --radius-sm: 10px;
         --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -90,7 +91,7 @@ const currentYear = new Date().getFullYear();
         position: fixed;
         inset: 0;
         z-index: 0;
-        opacity: 0.03;
+        opacity: 0.015;
         pointer-events: none;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
         background-repeat: repeat;
@@ -102,7 +103,7 @@ const currentYear = new Date().getFullYear();
         filter: blur(120px);
         pointer-events: none;
         z-index: 0;
-        opacity: 0.15;
+        opacity: 0.08;
       }
       .orb-1 {
         width: 600px;
@@ -115,7 +116,7 @@ const currentYear = new Date().getFullYear();
       .orb-2 {
         width: 500px;
         height: 500px;
-        background: var(--accent);
+        background: var(--primary);
         bottom: -150px;
         right: -150px;
         animation: floatOrb 25s ease-in-out infinite reverse;
@@ -123,7 +124,7 @@ const currentYear = new Date().getFullYear();
       .orb-3 {
         width: 400px;
         height: 400px;
-        background: var(--accent2);
+        background: var(--primary);
         top: 50%;
         left: 50%;
         animation: floatOrb 18s ease-in-out infinite 2s;
@@ -161,10 +162,11 @@ const currentYear = new Date().getFullYear();
         transition: var(--transition);
       }
       .navbar.scrolled {
-        background: rgba(10, 10, 15, 0.85);
+        background: rgba(255, 255, 255, 0.88);
         backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(108, 99, 255, 0.1);
-        padding: 10px 0;
+        border-bottom: 1px solid var(--border-color);
+        padding: 12px 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
       }
       .navbar .container {
         display: flex;
@@ -243,19 +245,20 @@ const currentYear = new Date().getFullYear();
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(108, 99, 255, 0.12);
-        border: 1px solid rgba(108, 99, 255, 0.2);
+        background: rgba(37, 99, 235, 0.08);
+        border: 1px solid rgba(37, 99, 235, 0.2);
         padding: 8px 20px;
         border-radius: 50px;
         font-size: 0.85rem;
         color: var(--primary);
+        font-weight: 600;
         margin-bottom: 24px;
       }
       .hero-badge .dot {
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: var(--accent2);
+        background: var(--primary);
         animation: pulse 2s infinite;
       }
       @keyframes pulse {
@@ -279,8 +282,7 @@ const currentYear = new Date().getFullYear();
         background: linear-gradient(
           135deg,
           var(--primary),
-          var(--accent),
-          var(--accent2)
+          var(--accent)
         );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -337,22 +339,23 @@ const currentYear = new Date().getFullYear();
         border: none;
       }
       .btn-primary {
-        background: linear-gradient(135deg, var(--primary), #5a52e0);
+        background: linear-gradient(135deg, var(--primary), var(--accent));
         color: #fff;
-        box-shadow: 0 4px 20px var(--primary-glow);
+        box-shadow: 0 4px 15px var(--primary-glow);
       }
       .btn-primary:hover {
         transform: translateY(-3px);
-        box-shadow: 0 8px 35px var(--primary-glow);
+        box-shadow: 0 8px 25px var(--primary-glow);
       }
       .btn-outline {
         background: transparent;
         color: var(--text);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        border: 1px solid var(--border-color);
       }
       .btn-outline:hover {
         border-color: var(--primary);
-        background: rgba(108, 99, 255, 0.08);
+        background: rgba(37, 99, 235, 0.04);
+        color: var(--primary);
         transform: translateY(-3px);
       }
       .hero-stats {
@@ -360,7 +363,7 @@ const currentYear = new Date().getFullYear();
         gap: 40px;
         margin-top: 48px;
         padding-top: 32px;
-        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        border-top: 1px solid var(--border-color);
       }
       .stat h3 {
         font-size: 1.8rem;
@@ -386,15 +389,6 @@ const currentYear = new Date().getFullYear();
         height: 380px;
         border-radius: 50%;
         position: relative;
-        animation: rotateRing 30s linear infinite;
-      }
-      @keyframes rotateRing {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
       }
       .profile-ring::before {
         content: "";
@@ -404,7 +398,7 @@ const currentYear = new Date().getFullYear();
         background: conic-gradient(
           var(--primary),
           var(--accent),
-          var(--accent2),
+          rgba(37, 99, 235, 0.2),
           var(--primary)
         );
         -webkit-mask: radial-gradient(
@@ -431,31 +425,31 @@ const currentYear = new Date().getFullYear();
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        border: 2px solid rgba(108, 99, 255, 0.1);
+        border: 2px solid var(--border-color);
       }
       .profile-placeholder i {
         font-size: 5rem;
         color: var(--primary);
-        opacity: 0.3;
+        opacity: 0.4;
       }
       .floating-badge {
         position: absolute;
-        background: var(--surface);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: var(--bg);
+        border: 1px solid var(--border-color);
         border-radius: var(--radius-sm);
         padding: 12px 18px;
         display: flex;
         align-items: center;
         gap: 10px;
         font-size: 0.85rem;
-        font-weight: 500;
-        backdrop-filter: blur(10px);
+        font-weight: 600;
+        color: var(--text);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         animation: floatBadge 6s ease-in-out infinite;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       }
       .floating-badge i {
         font-size: 1.2rem;
-        color: var(--accent2);
+        color: var(--primary);
       }
       .floating-badge.badge-1 {
         top: 10%;
@@ -524,7 +518,7 @@ const currentYear = new Date().getFullYear();
       }
       .about-card {
         background: var(--surface);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
         border-radius: var(--radius);
         padding: 40px;
         position: relative;
@@ -572,7 +566,7 @@ const currentYear = new Date().getFullYear();
       }
       .about-image-card {
         background: var(--surface);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
         border-radius: var(--radius);
         padding: 32px 24px;
         text-align: center;
@@ -580,8 +574,8 @@ const currentYear = new Date().getFullYear();
       }
       .about-image-card:hover {
         transform: translateY(-5px);
-        border-color: rgba(108, 99, 255, 0.2);
-        box-shadow: 0 8px 30px rgba(108, 99, 255, 0.08);
+        border-color: var(--primary);
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.06);
       }
       .about-image-card .icon {
         width: 56px;
@@ -592,22 +586,15 @@ const currentYear = new Date().getFullYear();
         justify-content: center;
         margin: 0 auto 16px;
         font-size: 1.5rem;
-      }
-      .icon-purple {
-        background: rgba(108, 99, 255, 0.12);
+        background: rgba(37, 99, 235, 0.08);
         color: var(--primary);
       }
-      .icon-pink {
-        background: rgba(255, 101, 132, 0.12);
-        color: var(--accent);
-      }
-      .icon-green {
-        background: rgba(0, 212, 170, 0.12);
-        color: var(--accent2);
-      }
+      .icon-purple,
+      .icon-pink,
+      .icon-green,
       .icon-yellow {
-        background: rgba(255, 214, 0, 0.12);
-        color: #ffd600;
+        background: rgba(37, 99, 235, 0.08);
+        color: var(--primary);
       }
       .about-image-card h4 {
         font-size: 1rem;
@@ -631,7 +618,7 @@ const currentYear = new Date().getFullYear();
       }
       .skill-item {
         background: var(--bg);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
         border-radius: var(--radius-sm);
         padding: 28px 20px;
         text-align: center;
@@ -639,9 +626,9 @@ const currentYear = new Date().getFullYear();
         cursor: default;
       }
       .skill-item:hover {
-        border-color: rgba(108, 99, 255, 0.2);
+        border-color: var(--primary);
         transform: translateY(-5px);
-        box-shadow: 0 8px 30px rgba(108, 99, 255, 0.08);
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.08);
       }
       .skill-item i {
         font-size: 2.2rem;
@@ -684,7 +671,7 @@ const currentYear = new Date().getFullYear();
       .bar-track {
         width: 100%;
         height: 6px;
-        background: rgba(255, 255, 255, 0.06);
+        background: var(--surface2);
         border-radius: 3px;
         overflow: hidden;
       }
@@ -707,15 +694,15 @@ const currentYear = new Date().getFullYear();
       }
       .project-card {
         background: var(--surface);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
         border-radius: var(--radius);
         overflow: hidden;
         transition: var(--transition);
       }
       .project-card:hover {
         transform: translateY(-8px);
-        border-color: rgba(108, 99, 255, 0.15);
-        box-shadow: 0 20px 60px rgba(108, 99, 255, 0.08);
+        border-color: var(--primary);
+        box-shadow: 0 20px 50px rgba(37, 99, 235, 0.08);
       }
       .project-thumb {
         height: 200px;
@@ -728,16 +715,12 @@ const currentYear = new Date().getFullYear();
       }
       .project-thumb i {
         font-size: 3rem;
-        color: rgba(108, 99, 255, 0.2);
+        color: rgba(37, 99, 235, 0.25);
       }
       .project-thumb .overlay {
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          135deg,
-          rgba(108, 99, 255, 0.1),
-          rgba(255, 101, 132, 0.1)
-        );
+        background: rgba(37, 99, 235, 0.85);
         opacity: 0;
         transition: var(--transition);
         display: flex;
@@ -750,8 +733,8 @@ const currentYear = new Date().getFullYear();
       .project-thumb .overlay .btn-small {
         padding: 10px 24px;
         border-radius: 50px;
-        background: var(--primary);
-        color: #fff;
+        background: #fff;
+        color: var(--primary);
         font-weight: 600;
         font-size: 0.85rem;
         border: none;
@@ -772,7 +755,7 @@ const currentYear = new Date().getFullYear();
         border-radius: 50px;
         font-size: 0.75rem;
         font-weight: 500;
-        background: rgba(108, 99, 255, 0.1);
+        background: rgba(37, 99, 235, 0.08);
         color: var(--primary);
       }
       .project-info h3 {
@@ -847,13 +830,13 @@ const currentYear = new Date().getFullYear();
       }
       .timeline-content {
         background: var(--bg);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
         border-radius: var(--radius);
         padding: 28px 32px;
         transition: var(--transition);
       }
       .timeline-content:hover {
-        border-color: rgba(108, 99, 255, 0.15);
+        border-color: var(--primary);
       }
       .timeline-content .date {
         font-size: 0.8rem;
@@ -888,19 +871,20 @@ const currentYear = new Date().getFullYear();
       }
       .testimonial-card {
         background: var(--surface);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border-color);
         border-radius: var(--radius);
         padding: 32px;
         transition: var(--transition);
       }
       .testimonial-card:hover {
-        border-color: rgba(108, 99, 255, 0.15);
+        border-color: var(--primary);
         transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.05);
       }
       .testimonial-card .quote {
         font-size: 2.5rem;
         color: var(--primary);
-        opacity: 0.2;
+        opacity: 0.3;
         line-height: 1;
         margin-bottom: 8px;
       }
@@ -972,7 +956,7 @@ const currentYear = new Date().getFullYear();
         width: 48px;
         height: 48px;
         border-radius: 12px;
-        background: rgba(108, 99, 255, 0.1);
+        background: rgba(37, 99, 235, 0.08);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -996,7 +980,8 @@ const currentYear = new Date().getFullYear();
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.05);
+        background: var(--bg);
+        border: 1px solid var(--border-color);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1006,6 +991,7 @@ const currentYear = new Date().getFullYear();
       }
       .social-links a:hover {
         background: var(--primary);
+        border-color: var(--primary);
         color: #fff;
         transform: translateY(-3px);
       }
@@ -1025,7 +1011,7 @@ const currentYear = new Date().getFullYear();
         padding: 16px 20px;
         border-radius: var(--radius-sm);
         background: var(--bg);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--border-color);
         color: var(--text);
         font-family: inherit;
         font-size: 0.95rem;
@@ -1049,7 +1035,8 @@ const currentYear = new Date().getFullYear();
       .footer {
         padding: 40px 0;
         text-align: center;
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        border-top: 1px solid var(--border-color);
+        background: var(--bg);
       }
       .footer p {
         color: var(--text-muted);
@@ -1079,10 +1066,10 @@ const currentYear = new Date().getFullYear();
         position: fixed;
         pointer-events: none;
         z-index: 9999;
-        mix-blend-mode: difference;
+        mix-blend-mode: multiply;
         transition: transform 0.15s ease;
         transform: translate(-50%, -50%);
-        opacity: 0.6;
+        opacity: 0.2;
       }
 
       /* === RESPONSIVE === */
@@ -1120,13 +1107,13 @@ const currentYear = new Date().getFullYear();
           right: -100%;
           width: 280px;
           height: 100vh;
-          background: rgba(10, 10, 15, 0.98);
+          background: rgba(255, 255, 255, 0.98);
           backdrop-filter: blur(20px);
           flex-direction: column;
           justify-content: center;
           padding: 40px;
           transition: var(--transition);
-          border-left: 1px solid rgba(255, 255, 255, 0.06);
+          border-left: 1px solid var(--border-color);
         }
         .nav-links.active {
           right: 0;
