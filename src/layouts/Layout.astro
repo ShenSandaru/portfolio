@@ -208,13 +208,125 @@ const currentYear = new Date().getFullYear();
         right: -150px;
         animation: floatOrb 25s ease-in-out infinite reverse;
       }
-      .orb-3 {
-        width: 400px;
-        height: 400px;
-        background: var(--primary);
-        top: 50%;
-        left: 50%;
-        animation: floatOrb 18s ease-in-out infinite 2s;
+      /* === SIDE AMBIENT GLOW BARS === */
+      .side-glow-left,
+      .side-glow-right {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 240px;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.6;
+        transition: opacity 0.5s ease;
+      }
+      .side-glow-left {
+        left: 0;
+        background: radial-gradient(
+          ellipse 100% 60% at 0% 50%,
+          rgba(37, 99, 235, 0.18) 0%,
+          rgba(29, 78, 216, 0.06) 50%,
+          transparent 100%
+        );
+        animation: liveLightLeft 10s ease-in-out infinite alternate;
+      }
+      .side-glow-right {
+        right: 0;
+        background: radial-gradient(
+          ellipse 100% 60% at 100% 50%,
+          rgba(37, 99, 235, 0.18) 0%,
+          rgba(29, 78, 216, 0.06) 50%,
+          transparent 100%
+        );
+        animation: liveLightRight 12s ease-in-out infinite alternate;
+      }
+      body.dark-mode .side-glow-left {
+        background: radial-gradient(
+          ellipse 100% 60% at 0% 50%,
+          rgba(59, 130, 246, 0.22) 0%,
+          rgba(37, 99, 235, 0.08) 50%,
+          transparent 100%
+        );
+      }
+      /* === POINTER SENSITIVE HOVER GLOW === */
+      .pointer-glow {
+        position: fixed;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(37, 99, 235, 0.14) 0%,
+          rgba(29, 78, 216, 0.04) 45%,
+          transparent 70%
+        );
+        filter: blur(20px);
+        pointer-events: none;
+        z-index: 0;
+        transform: translate(-50%, -50%);
+        opacity: 0.85;
+        transition: opacity 0.4s ease;
+      }
+      body.dark-mode .pointer-glow {
+        background: radial-gradient(
+          circle,
+          rgba(96, 165, 250, 0.15) 0%,
+          rgba(37, 99, 235, 0.04) 45%,
+          transparent 70%
+        );
+      }
+
+      /* Dynamic Card Spotlight Highlight on Hover */
+      .about-card,
+      .about-image-card,
+      .skill-item,
+      .project-card,
+      .timeline-content {
+        position: relative;
+        background-image: radial-gradient(
+          350px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+          rgba(37, 99, 235, 0.07),
+          transparent 80%
+        );
+      }
+      body.dark-mode .about-card,
+      body.dark-mode .about-image-card,
+      body.dark-mode .skill-item,
+      body.dark-mode .project-card,
+      body.dark-mode .timeline-content {
+        background-image: radial-gradient(
+          350px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+          rgba(96, 165, 250, 0.12),
+          transparent 80%
+        );
+      }
+      @keyframes liveLightLeft {
+        0% {
+          opacity: 0.4;
+          transform: translateY(-6%) scaleY(0.95);
+        }
+        50% {
+          opacity: 0.85;
+          transform: translateY(6%) scaleY(1.1);
+        }
+        100% {
+          opacity: 0.4;
+          transform: translateY(-6%) scaleY(0.95);
+        }
+      }
+      @keyframes liveLightRight {
+        0% {
+          opacity: 0.85;
+          transform: translateY(6%) scaleY(1.1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: translateY(-6%) scaleY(0.95);
+        }
+        100% {
+          opacity: 0.85;
+          transform: translateY(6%) scaleY(1.1);
+        }
       }
       @keyframes floatOrb {
         0%,
@@ -1273,6 +1385,9 @@ const currentYear = new Date().getFullYear();
 
     <!-- Background decorations -->
     <div class="noise"></div>
+    <div class="pointer-glow" id="pointerGlow"></div>
+    <div class="side-glow-left"></div>
+    <div class="side-glow-right"></div>
     <div class="orb orb-1" id="orb1"></div>
     <div class="orb orb-2" id="orb2"></div>
     <div class="orb orb-3" id="orb3"></div>
@@ -1406,6 +1521,8 @@ const currentYear = new Date().getFullYear();
           const rotateX = ((y - centerY) / centerY) * -6;
           const rotateY = ((x - centerX) / centerX) * 6;
 
+          el.style.setProperty("--mouse-x", `${x}px`);
+          el.style.setProperty("--mouse-y", `${y}px`);
           el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
         });
 
@@ -1414,14 +1531,22 @@ const currentYear = new Date().getFullYear();
         });
       });
 
-      // === Cursor follower ===
+      // === Pointer Glow & Cursor follower ===
+      const pointerGlow = document.getElementById("pointerGlow");
       const cursor = document.getElementById("cursor");
-      if (cursor) {
-        document.addEventListener("mousemove", (e) => {
-          cursor.style.left = e.clientX + "px";
-          cursor.style.top = e.clientY + "px";
-        });
-        if ("ontouchstart" in window) cursor.style.display = "none";
+      
+      document.addEventListener("mousemove", (e: MouseEvent) => {
+        if (pointerGlow) {
+          pointerGlow.style.left = `${e.clientX}px`;
+          pointerGlow.style.top = `${e.clientY}px`;
+        }
+        if (cursor) {
+          cursor.style.left = `${e.clientX}px`;
+          cursor.style.top = `${e.clientY}px`;
+        }
+      });
+      if ("ontouchstart" in window && cursor) {
+        cursor.style.display = "none";
       }
 
       // === Scroll reveal IntersectionObserver ===
