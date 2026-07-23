@@ -283,6 +283,22 @@ const currentYear = new Date().getFullYear();
       .nav-links a:hover::after {
         width: 100%;
       }
+      .nav-links a.nav-resume-btn {
+        padding: 8px 18px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        color: #ffffff !important;
+        font-weight: 600;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+        transition: all 0.3s ease;
+      }
+      .nav-links a.nav-resume-btn::after {
+        display: none;
+      }
+      .nav-links a.nav-resume-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+      }
       .hamburger {
         display: none;
         flex-direction: column;
@@ -1271,7 +1287,13 @@ const currentYear = new Date().getFullYear();
         <div class="nav-links" id="navLinks">
           {
             mainNavLinks.map((link) => (
-              <a href={link.href}>{link.label}</a>
+              <a
+                href={link.href}
+                class={link.isButton ? "nav-resume-btn" : undefined}
+                onclick={link.isButton ? "event.preventDefault(); alert('Resume will be available soon!');" : undefined}
+              >
+                {link.label}
+              </a>
             ))
           }
         </div>
