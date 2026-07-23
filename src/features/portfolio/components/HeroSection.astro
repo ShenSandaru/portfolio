@@ -24,7 +24,7 @@ const { content } = Astro.props;
           <span id="typingText"></span>
           <span class="typing-cursor"></span>
         </div>
-        <p class="reveal">{content.intro}</p>
+        {content.intro && <p class="reveal">{content.intro}</p>}
         <div class="hero-buttons reveal">
           <a href={content.ctaPrimaryHref} class="btn btn-primary"
             ><i class="fas fa-rocket"></i> {content.ctaPrimaryLabel}</a

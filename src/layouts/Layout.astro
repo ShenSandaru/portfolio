@@ -40,18 +40,21 @@ const currentYear = new Date().getFullYear();
         box-sizing: border-box;
       }
       :root {
-        --bg: #ffffff;
-        --surface: #f8fafc;
-        --surface2: #f1f5f9;
+        --bg: #f8fafc;
+        --surface: rgba(255, 255, 255, 0.65);
+        --surface2: rgba(241, 245, 249, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.6);
+        --glass-shadow: 0 12px 40px rgba(31, 38, 135, 0.07);
+        --glass-blur: blur(16px) saturate(180%);
         --primary: #2563eb;
-        --primary-glow: rgba(37, 99, 235, 0.15);
+        --primary-glow: rgba(37, 99, 235, 0.25);
         --accent: #1d4ed8;
         --accent2: #2563eb;
         --text: #0f172a;
         --text-muted: #64748b;
-        --border-color: #e2e8f0;
-        --radius: 16px;
-        --radius-sm: 10px;
+        --border-color: rgba(226, 232, 240, 0.8);
+        --radius: 20px;
+        --radius-sm: 14px;
         --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
       html {
@@ -70,11 +73,18 @@ const currentYear = new Date().getFullYear();
       body.dark-mode {
         background-color: #0b0c10 !important;
         color: #f1f5f9 !important;
+        --surface: rgba(18, 24, 38, 0.65);
+        --surface2: rgba(30, 41, 59, 0.6);
+        --border-color: rgba(255, 255, 255, 0.1);
+        --glass-border: rgba(255, 255, 255, 0.12);
+        --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
       }
       body.dark-mode .navbar.scrolled {
-        background: rgba(11, 12, 16, 0.92) !important;
+        background: rgba(11, 12, 16, 0.75) !important;
+        backdrop-filter: var(--glass-blur) !important;
+        -webkit-backdrop-filter: var(--glass-blur) !important;
         border-bottom-color: rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5) !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
       }
       body.dark-mode .nav-links a {
         color: #94a3b8 !important;
@@ -106,11 +116,13 @@ const currentYear = new Date().getFullYear();
         background: rgba(37, 99, 235, 0.15) !important;
         color: #60a5fa !important;
         border: 1px solid rgba(96, 165, 250, 0.2) !important;
+        backdrop-filter: blur(8px);
       }
       body.dark-mode .contact-form input,
       body.dark-mode .contact-form textarea {
-        background: rgba(15, 23, 42, 0.7) !important;
-        border-color: rgba(255, 255, 255, 0.15) !important;
+        background: rgba(15, 23, 42, 0.5) !important;
+        backdrop-filter: blur(12px) !important;
+        border-color: rgba(255, 255, 255, 0.12) !important;
         color: #ffffff !important;
       }
       body.dark-mode .contact-form input::placeholder,
@@ -121,10 +133,11 @@ const currentYear = new Date().getFullYear();
       body.dark-mode .contact-form textarea:focus {
         border-color: #60a5fa !important;
         box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3) !important;
-        background: rgba(15, 23, 42, 0.9) !important;
+        background: rgba(15, 23, 42, 0.75) !important;
       }
       body.dark-mode .social-links a {
         background: rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(8px) !important;
         border-color: rgba(255, 255, 255, 0.1) !important;
         color: #94a3b8 !important;
       }
@@ -133,7 +146,8 @@ const currentYear = new Date().getFullYear();
         color: #ffffff !important;
       }
       body.dark-mode .footer {
-        background: #0b0c10 !important;
+        background: rgba(11, 12, 16, 0.8) !important;
+        backdrop-filter: blur(12px) !important;
         border-top-color: rgba(255, 255, 255, 0.1) !important;
       }
 
@@ -194,13 +208,125 @@ const currentYear = new Date().getFullYear();
         right: -150px;
         animation: floatOrb 25s ease-in-out infinite reverse;
       }
-      .orb-3 {
-        width: 400px;
-        height: 400px;
-        background: var(--primary);
-        top: 50%;
-        left: 50%;
-        animation: floatOrb 18s ease-in-out infinite 2s;
+      /* === SIDE AMBIENT GLOW BARS === */
+      .side-glow-left,
+      .side-glow-right {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 240px;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.6;
+        transition: opacity 0.5s ease;
+      }
+      .side-glow-left {
+        left: 0;
+        background: radial-gradient(
+          ellipse 100% 60% at 0% 50%,
+          rgba(37, 99, 235, 0.18) 0%,
+          rgba(29, 78, 216, 0.06) 50%,
+          transparent 100%
+        );
+        animation: liveLightLeft 10s ease-in-out infinite alternate;
+      }
+      .side-glow-right {
+        right: 0;
+        background: radial-gradient(
+          ellipse 100% 60% at 100% 50%,
+          rgba(37, 99, 235, 0.18) 0%,
+          rgba(29, 78, 216, 0.06) 50%,
+          transparent 100%
+        );
+        animation: liveLightRight 12s ease-in-out infinite alternate;
+      }
+      body.dark-mode .side-glow-left {
+        background: radial-gradient(
+          ellipse 100% 60% at 0% 50%,
+          rgba(59, 130, 246, 0.22) 0%,
+          rgba(37, 99, 235, 0.08) 50%,
+          transparent 100%
+        );
+      }
+      /* === POINTER SENSITIVE HOVER GLOW === */
+      .pointer-glow {
+        position: fixed;
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(37, 99, 235, 0.14) 0%,
+          rgba(29, 78, 216, 0.04) 45%,
+          transparent 70%
+        );
+        filter: blur(20px);
+        pointer-events: none;
+        z-index: 0;
+        transform: translate(-50%, -50%);
+        opacity: 0.85;
+        transition: opacity 0.4s ease;
+      }
+      body.dark-mode .pointer-glow {
+        background: radial-gradient(
+          circle,
+          rgba(96, 165, 250, 0.15) 0%,
+          rgba(37, 99, 235, 0.04) 45%,
+          transparent 70%
+        );
+      }
+
+      /* Dynamic Card Spotlight Highlight on Hover */
+      .about-card,
+      .about-image-card,
+      .skill-item,
+      .project-card,
+      .timeline-content {
+        position: relative;
+        background-image: radial-gradient(
+          350px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+          rgba(37, 99, 235, 0.07),
+          transparent 80%
+        );
+      }
+      body.dark-mode .about-card,
+      body.dark-mode .about-image-card,
+      body.dark-mode .skill-item,
+      body.dark-mode .project-card,
+      body.dark-mode .timeline-content {
+        background-image: radial-gradient(
+          350px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+          rgba(96, 165, 250, 0.12),
+          transparent 80%
+        );
+      }
+      @keyframes liveLightLeft {
+        0% {
+          opacity: 0.4;
+          transform: translateY(-6%) scaleY(0.95);
+        }
+        50% {
+          opacity: 0.85;
+          transform: translateY(6%) scaleY(1.1);
+        }
+        100% {
+          opacity: 0.4;
+          transform: translateY(-6%) scaleY(0.95);
+        }
+      }
+      @keyframes liveLightRight {
+        0% {
+          opacity: 0.85;
+          transform: translateY(6%) scaleY(1.1);
+        }
+        50% {
+          opacity: 0.4;
+          transform: translateY(-6%) scaleY(0.95);
+        }
+        100% {
+          opacity: 0.85;
+          transform: translateY(6%) scaleY(1.1);
+        }
       }
       @keyframes floatOrb {
         0%,
@@ -334,8 +460,11 @@ const currentYear = new Date().getFullYear();
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: rgba(37, 99, 235, 0.08);
-        border: 1px solid rgba(37, 99, 235, 0.2);
+        background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--glass-shadow);
         padding: 8px 20px;
         border-radius: 50px;
         font-size: 0.85rem;
@@ -437,15 +566,19 @@ const currentYear = new Date().getFullYear();
         box-shadow: 0 8px 25px var(--primary-glow);
       }
       .btn-outline {
-        background: transparent;
+        background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         color: var(--text);
         border: 1px solid var(--border-color);
+        box-shadow: var(--glass-shadow);
       }
       .btn-outline:hover {
         border-color: var(--primary);
-        background: rgba(37, 99, 235, 0.04);
+        background: rgba(37, 99, 235, 0.08);
         color: var(--primary);
         transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.15);
       }
       .hero-stats {
         display: flex;
@@ -506,6 +639,9 @@ const currentYear = new Date().getFullYear();
         height: 340px;
         border-radius: 50%;
         background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
+        box-shadow: var(--glass-shadow);
         position: absolute;
         top: 50%;
         left: 50%;
@@ -523,7 +659,9 @@ const currentYear = new Date().getFullYear();
       }
       .floating-badge {
         position: absolute;
-        background: var(--bg);
+        background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--border-color);
         border-radius: var(--radius-sm);
         padding: 12px 18px;
@@ -533,7 +671,7 @@ const currentYear = new Date().getFullYear();
         font-size: 0.85rem;
         font-weight: 600;
         color: var(--text);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        box-shadow: var(--glass-shadow);
         animation: floatBadge 6s ease-in-out infinite;
       }
       .floating-badge i {
@@ -607,11 +745,14 @@ const currentYear = new Date().getFullYear();
       }
       .about-card {
         background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--border-color);
         border-radius: var(--radius);
         padding: 40px;
         position: relative;
         overflow: hidden;
+        box-shadow: var(--glass-shadow);
       }
       .about-card::before {
         content: "";
@@ -655,11 +796,14 @@ const currentYear = new Date().getFullYear();
       }
       .about-image-card {
         background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--border-color);
         border-radius: var(--radius);
         padding: 32px 24px;
         text-align: center;
         transition: var(--transition);
+        box-shadow: var(--glass-shadow);
       }
       .about-image-card:hover {
         transform: translateY(-5px);
@@ -698,7 +842,7 @@ const currentYear = new Date().getFullYear();
       /* === SKILLS === */
       .skills {
         padding: 120px 0;
-        background: var(--surface);
+        background: transparent;
       }
       .skills-grid {
         display: grid;
@@ -706,18 +850,21 @@ const currentYear = new Date().getFullYear();
         gap: 24px;
       }
       .skill-item {
-        background: var(--bg);
+        background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--border-color);
         border-radius: var(--radius-sm);
         padding: 28px 20px;
         text-align: center;
         transition: var(--transition);
+        box-shadow: var(--glass-shadow);
         cursor: default;
       }
       .skill-item:hover {
         border-color: var(--primary);
         transform: translateY(-5px);
-        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.08);
+        box-shadow: 0 16px 35px rgba(37, 99, 235, 0.15);
       }
       .skill-item i {
         font-size: 2.2rem;
@@ -783,15 +930,18 @@ const currentYear = new Date().getFullYear();
       }
       .project-card {
         background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--border-color);
         border-radius: var(--radius);
         overflow: hidden;
         transition: var(--transition);
+        box-shadow: var(--glass-shadow);
       }
       .project-card:hover {
         transform: translateY(-8px);
         border-color: var(--primary);
-        box-shadow: 0 20px 50px rgba(37, 99, 235, 0.08);
+        box-shadow: 0 20px 50px rgba(37, 99, 235, 0.15);
       }
       .project-thumb {
         height: 200px;
@@ -877,7 +1027,7 @@ const currentYear = new Date().getFullYear();
       /* === EXPERIENCE === */
       .experience {
         padding: 120px 0;
-        background: var(--surface);
+        background: transparent;
       }
       .timeline {
         position: relative;
@@ -918,14 +1068,19 @@ const currentYear = new Date().getFullYear();
         box-shadow: 0 0 0 2px var(--primary);
       }
       .timeline-content {
-        background: var(--bg);
+        background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--border-color);
         border-radius: var(--radius);
         padding: 28px 32px;
         transition: var(--transition);
+        box-shadow: var(--glass-shadow);
       }
       .timeline-content:hover {
         border-color: var(--primary);
+        transform: translateY(-4px);
+        box-shadow: 0 16px 35px rgba(37, 99, 235, 0.12);
       }
       .timeline-content .date {
         font-size: 0.8rem;
@@ -949,71 +1104,10 @@ const currentYear = new Date().getFullYear();
         line-height: 1.7;
       }
 
-      /* === TESTIMONIALS === */
-      .testimonials {
-        padding: 120px 0;
-      }
-      .testimonials-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 28px;
-      }
-      .testimonial-card {
-        background: var(--surface);
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius);
-        padding: 32px;
-        transition: var(--transition);
-      }
-      .testimonial-card:hover {
-        border-color: var(--primary);
-        transform: translateY(-4px);
-        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.05);
-      }
-      .testimonial-card .quote {
-        font-size: 2.5rem;
-        color: var(--primary);
-        opacity: 0.3;
-        line-height: 1;
-        margin-bottom: 8px;
-      }
-      .testimonial-card p {
-        color: var(--text-muted);
-        font-size: 0.95rem;
-        line-height: 1.7;
-        margin-bottom: 20px;
-        font-style: italic;
-      }
-      .testimonial-author {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-      }
-      .testimonial-author .avatar {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--primary), var(--accent));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 700;
-        font-size: 1.1rem;
-        color: #fff;
-      }
-      .testimonial-author .info h4 {
-        font-size: 0.9rem;
-        font-weight: 600;
-      }
-      .testimonial-author .info span {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-      }
-
       /* === CONTACT === */
       .contact {
         padding: 120px 0;
-        background: var(--surface);
+        background: transparent;
       }
       .contact-grid {
         display: grid;
@@ -1046,6 +1140,9 @@ const currentYear = new Date().getFullYear();
         height: 48px;
         border-radius: 12px;
         background: rgba(37, 99, 235, 0.08);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid var(--border-color);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1070,8 +1167,11 @@ const currentYear = new Date().getFullYear();
         width: 44px;
         height: 44px;
         border-radius: 50%;
-        background: var(--bg);
+        background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--border-color);
+        box-shadow: var(--glass-shadow);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1084,6 +1184,7 @@ const currentYear = new Date().getFullYear();
         border-color: var(--primary);
         color: #fff;
         transform: translateY(-3px);
+        box-shadow: 0 8px 20px var(--primary-glow);
       }
       .contact-form {
         display: flex;
@@ -1100,8 +1201,11 @@ const currentYear = new Date().getFullYear();
         width: 100%;
         padding: 16px 20px;
         border-radius: var(--radius-sm);
-        background: var(--bg);
+        background: var(--surface);
+        backdrop-filter: var(--glass-blur);
+        -webkit-backdrop-filter: var(--glass-blur);
         border: 1px solid var(--border-color);
+        box-shadow: var(--glass-shadow);
         color: var(--text);
         font-family: inherit;
         font-size: 0.95rem;
@@ -1111,7 +1215,7 @@ const currentYear = new Date().getFullYear();
       .contact-form input:focus,
       .contact-form textarea:focus {
         border-color: var(--primary);
-        box-shadow: 0 0 0 3px var(--primary-glow);
+        box-shadow: 0 0 0 3px var(--primary-glow), 0 8px 25px rgba(37, 99, 235, 0.1);
       }
       .contact-form textarea {
         min-height: 140px;
@@ -1281,6 +1385,9 @@ const currentYear = new Date().getFullYear();
 
     <!-- Background decorations -->
     <div class="noise"></div>
+    <div class="pointer-glow" id="pointerGlow"></div>
+    <div class="side-glow-left"></div>
+    <div class="side-glow-right"></div>
     <div class="orb orb-1" id="orb1"></div>
     <div class="orb orb-2" id="orb2"></div>
     <div class="orb orb-3" id="orb3"></div>
@@ -1414,6 +1521,8 @@ const currentYear = new Date().getFullYear();
           const rotateX = ((y - centerY) / centerY) * -6;
           const rotateY = ((x - centerX) / centerX) * 6;
 
+          el.style.setProperty("--mouse-x", `${x}px`);
+          el.style.setProperty("--mouse-y", `${y}px`);
           el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-6px)`;
         });
 
@@ -1422,14 +1531,22 @@ const currentYear = new Date().getFullYear();
         });
       });
 
-      // === Cursor follower ===
+      // === Pointer Glow & Cursor follower ===
+      const pointerGlow = document.getElementById("pointerGlow");
       const cursor = document.getElementById("cursor");
-      if (cursor) {
-        document.addEventListener("mousemove", (e) => {
-          cursor.style.left = e.clientX + "px";
-          cursor.style.top = e.clientY + "px";
-        });
-        if ("ontouchstart" in window) cursor.style.display = "none";
+      
+      document.addEventListener("mousemove", (e: MouseEvent) => {
+        if (pointerGlow) {
+          pointerGlow.style.left = `${e.clientX}px`;
+          pointerGlow.style.top = `${e.clientY}px`;
+        }
+        if (cursor) {
+          cursor.style.left = `${e.clientX}px`;
+          cursor.style.top = `${e.clientY}px`;
+        }
+      });
+      if ("ontouchstart" in window && cursor) {
+        cursor.style.display = "none";
       }
 
       // === Scroll reveal IntersectionObserver ===
