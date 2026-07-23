@@ -34,8 +34,7 @@ export const heroContent: HeroContent = {
   badge: "Available for work",
   titleName: "Shen",
   titleRole: "Developer",
-  intro:
-    "Undergraduate at University of Moratuwa. I craft digital experiences that blend beautiful design with robust engineering and clean code.",
+  intro: "",
   ctaPrimaryLabel: "View My Work",
   ctaPrimaryHref: "#projects",
   ctaSecondaryLabel: "Let's Talk",
